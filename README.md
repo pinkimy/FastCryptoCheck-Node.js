@@ -1,0 +1,1 @@
+# FastCryptoCheck-Node.js
