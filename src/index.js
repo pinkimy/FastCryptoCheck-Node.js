@@ -33,6 +33,32 @@ app.get("/currencies", async (req, res) => {
   }
 });
 
+app.get("/currencies/:id", async (req, res) => {
+  const APIKEY = process.env.APIKEY;
+
+  const id = req.params.id;
+
+  try {
+    const response = await fetch(
+      `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          "X-CMC_PRO_API_KEY": APIKEY,
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error to connect API" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
