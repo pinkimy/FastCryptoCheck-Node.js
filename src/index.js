@@ -9,22 +9,23 @@ const app = express();
 const PORT = process.env.PORT;
 const APIKEY = process.env.APIKEY;
 
+const baseUrl = `https://pro-api.coinmarketcap.com`;
+const headersCfg = {
+  "X-CMC_PRO_API_KEY": APIKEY,
+  Accept: "application/json",
+};
+
 app.get("/currencies", async (req, res) => {
-  const APIKEY = process.env.APIKEY;
   try {
     const response = await fetch(
-      "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+      `${baseUrl}/v1/cryptocurrency/listings/latest`,
       {
         method: "GET",
-        headers: {
-          "X-CMC_PRO_API_KEY": APIKEY,
-          Accept: "application/json",
-        },
+        headers: headersCfg,
       }
     );
 
     const data = await response.json();
-    console.log(data);
 
     res.json(data);
   } catch (error) {
@@ -34,19 +35,14 @@ app.get("/currencies", async (req, res) => {
 });
 
 app.get("/currencies/:id", async (req, res) => {
-  const APIKEY = process.env.APIKEY;
-
   const id = req.params.id;
 
   try {
     const response = await fetch(
-      `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${id}`,
+      `${baseUrl}/v2/cryptocurrency/quotes/latest?id=${id}`,
       {
         method: "GET",
-        headers: {
-          "X-CMC_PRO_API_KEY": APIKEY,
-          Accept: "application/json",
-        },
+        headers: headersCfg,
       }
     );
 
